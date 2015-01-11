@@ -8,7 +8,7 @@ class Brew
       puts 'Already installed: homebrew'
     else
       puts 'Installing homebrew...'
-      system %Q{ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"}
+      system %Q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
     end
   end
 

@@ -45,8 +45,8 @@ system 'pip install -r pip_requirements.txt'
 brew.install 'rbenv' # ruby version manager
 brew.install 'ruby-build' # ruby installer/builder
 brew.install 'rbenv-gem-rehash' # automatic put gems onto PATH
-rbenv.install('2.1.3')
-rbenv.global('2.1.3')
+rbenv.install('2.2.0')
+rbenv.global('2.2.0')
 
 # Node
 brew.install 'node'
@@ -58,6 +58,7 @@ brew.install 'scala'
 brew.install 'sbt'
 
 # R
+# brew install 'Caskroom/cask/xquartz'
 brew.install 'r'
 brew.cask_install 'rstudio'
 # R_BREW_INSTALLATION = '/usr/local/opt/r/R.framework'
@@ -66,6 +67,13 @@ brew.cask_install 'rstudio'
 #   puts "Symlinking '#{R_BREW_INSTALLATION}' to '/Library/Frameworks'"
 #   File.symlink(R_BREW_INSTALLATION, "/Library/Frameworks")  
 # end
+#
+# To enable rJava support, run the following command:
+#   R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Headers
+# If you've installed a version of Java other than the default, you might need to instead use:
+#   R CMD javareconf JAVA_CPPFLAGS='-I/System/Library/Frameworks/JavaVM.framework/Headers -I/Library/Java/JavaVirtualMachines/jdk<version>.jdk/'
+#   (where <version> can be found by running `java -version` or `locate jni.h`)
+#
 
 # Zsh
 zsh.provision
@@ -76,6 +84,7 @@ brew.cask_install 'caffeine'
 # brew.cask_install 'dropbox'
 # brew.cask_install 'eloquent'
 brew.cask_install 'firefox'
+brew.cask_install 'gimp'
 brew.cask_install 'google-chrome'
 # brew.cask_install 'google-drive'
 # brew.cask_install 'google-hangouts'
