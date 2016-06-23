@@ -1,3 +1,7 @@
+# Hides desktop icons if "false"
+# Need to do a "killall finder" after changing this
+# defaults write com.apple.finder CreateDesktop false
+
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="robbyrussell"
@@ -11,12 +15,18 @@ export PATH="/usr/local/share/python:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+# android
+export PATH="/Users/kevin.tham/adt-bundle-mac-x86_64-20140702/sdk/platform-tools:$PATH"
+
 # Java
-export JAVA_HOME=$(/usr/libexec/java_home)
-# export JAVA_OPTS='-Xms256M -Xmx512M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+DoEscapeAnalysis -XX:+UseBiasedLocking -XX:PermSize=64M -XX:MaxPermSize=256M'
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+# export JAVA_OPTS='-Xms256M -Xmx512M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+DoEscapeAnalysis -XX:+UseBiasedLocking -XX:PermSize=64M'
+
+# rJava
+# R CMD javareconf JAVA_CPPFLAGS="-I/System/Library/Frameworks/JavaVM.framework/Headers -I/Library/Java/JavaVirtualMachines/$(ls /Library/Java/JavaVirtualMachines/ | sort -r | head -1)/"
 
 # SBT
-export SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
+export SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled"
 
 # Postgresapp
 # Note: Install from: http://postgresapp.com/
