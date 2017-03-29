@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+major, minor, patch  = RUBY_VERSION.split(".").map { |x| x.to_i }
+raise "ERROR: Ruby Major Version must be == 2! - currently #{RUBY_VERSION}. Please update your MacOS." if major != 2
+raise "ERROR: git is missing! Please run `xcode-select --install`" if `which git`.empty?
+
+require_relative 'lib/all'
+
+# assign singleton support objects to local variables
+brew = Brew.instance
+file_util = FileUtil.instance
+git = Git.instance
+nodenv = Nodenv.instance
+rbenv = Rbenv.instance
+zsh = Zsh.instance
+
+# Install Homebrew
+brew.provision
+
+# Homebrew taps
+brew.tap 'caskroom/cask'
+brew.tap 'caskroom/versions'
+brew.tap 'homebrew/dupes'
+brew.tap 'homebrew/science'
+
+# Update formulas
+brew.update
+
+# Upgrade existing packages
+brew.upgrade
+
+# Common dependencies
+brew.install 'imagemagick'
+brew.install 'gcc' # contains gfortran, which is required for SciPy, R
+brew.install 'openssl'
+
+# Useful Utils
+brew.install 'git' # source control
+brew.install 'grep' # gnu grep is better than bsd grep on the mac
+brew.install 'htop-osx' # view system stats
+brew.install 'jq' # JSON utility
+brew.install 'phantomjs' # headless webkit tool
+brew.install 'tmux' # terminal multiplexer
+brew.install 'vim' # text editor
+git.config('core.editor', '/usr/local/bin/vim')
+
+# Python
+brew.install 'python'
+# system 'pip install -r pip_requirements.txt'
+
+# Ruby
+brew.install 'rbenv' # ruby version manager
+brew.install 'ruby-build' # ruby installer
+rbenv.install('2.4.1')
+rbenv.global('2.4.1')
+
+# Node/Yarn
+brew.install 'nodenv' # node version manager
+brew.install 'node-build' # node installer
+nodenv.install('6.10.1')
+nodenv.global('6.10.1')
+
+brew.install 'yarn'  # It also installs the latest node 7.x. but NVM above with ensure we use 6.x
+
+# Java & Scala
+brew.cask_install 'java' # Installs the latest jdk (e.g. '1.8.0_121-b13')
+brew.install 'scala' # Scala Repl
+brew.install 'sbt' # Java/Scala build tool
+brew.cask_install 'visualvm' # JVM profiler
+
+# Ohter useful applications
+brew.cask_install 'keepingyouawake' # Keep computer from sleeping
+brew.cask_install 'sourcetree' # GUI for git
+brew.cask_install 'vlc'
+
+# Remove old versions
+brew.cleanup
+
+# Make zsh the default shell
+zsh.provision
+zsh.make_default
+
+# Dotfiles
+file_util.symlink('dotfiles/.vimrc', '~/.vimrc')
+file_util.symlink('dotfiles/.zshrc', '~/.zshrc')

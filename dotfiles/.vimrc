@@ -18,4 +18,3 @@ au BufWrite /private/tmp/crontab.* set nowritebackup
 
 " Don't write backup file if vim is being called by "chpass"
 au BufWrite /private/etc/pw.* set nowritebackup
-

@@ -1,6 +1,7 @@
 require_relative 'brew'
 require_relative 'file_util'
+require_relative 'git'
 require_relative 'jar'
-require_relative 'npm'
+require_relative 'nodenv'
 require_relative 'rbenv'
 require_relative 'zsh'

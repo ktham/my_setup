@@ -15,7 +15,7 @@ class Zsh
   end
 
   def make_default
-    if ENV["SHELL"] =~ /zsh/
+    if ENV["SHELL"].strip.split("/").last == "zsh"
       puts "Already default shell: zsh"
     else
       puts "Setting default shell: zsh"
