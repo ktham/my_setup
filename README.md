@@ -1,22 +1,27 @@
 # my_setup
 
-This is my development environment scripted in Ruby 2.0+.
-This project here provided here as courtesy for fellow devs to benefit from and only works on a Mac.
-Feel free to fork this and modify to your heart's content
+This is the script is used to set up my development environment.
+
 
 ## Prerequisites
-* Installing Mac OS X command line tools `xcode-select --install`
-* Git (in order to get these scripts), or just download the zipped up file from Github.
-* Ruby 2.0.0 or higher (Should have already came with OS X Mavericks or higher)
-* [XQuartz](https://xquartz.macosforge.org/) - for installing X11 programs like R
+* MacOS Sierra and higher (I've only tested it on Sierra)
+* Mac OS X command line tools (`xcode-select --install`)
+* Ruby 2.0.0 or higher (MacOS Sierra already has it)
+* *Optional* [XQuartz](https://xquartz.macosforge.org/) - for X11
 
-## Installation
+## Getting Started
+
+Simply checkout the repo and run the provision script. The script is pretty minimal and reads like a shell script. The script is also idempotent so you don't have to worry about running it multiple times.
 
 ```bash
 git clone https://github.com/ktham/my_setup.git ~/my_setup
 cd my_setup
 ./provision
 ```
+
+## Customizations
+### zsh
+Add your own files to `~/.zshrc.d` and it will automatically be loaded.
 
 ## License
 

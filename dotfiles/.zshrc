@@ -1,4 +1,6 @@
-# (TODO: create functions for these) Need to do a "killall Finder" after changing this
+# MacOS config changes
+#   TODO: create functions to toggle these values
+#   Note: Need to do a "killall Finder" after changing this
 # defaults write com.apple.finder CreateDesktop false # Hides desktop icons if "false"
 # defaults write com.apple.finder AppleShowAllFiles YES # Show hidden files/directories
 

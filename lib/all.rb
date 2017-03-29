@@ -5,3 +5,10 @@ require_relative 'jar'
 require_relative 'nodenv'
 require_relative 'rbenv'
 require_relative 'zsh'
+
+def brew() Brew.instance end
+def file_util() FileUtil.instance end
+def git() Git.instance end
+def nodenv() Nodenv.instance end
+def rbenv()Rbenv.instance end
+def zsh()Zsh.instance end

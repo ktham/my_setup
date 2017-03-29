@@ -1,18 +1,10 @@
 #!/usr/bin/env ruby
+require_relative 'lib/all'
 
+# Assertions for script prerequisites
 major, minor, patch  = RUBY_VERSION.split(".").map { |x| x.to_i }
 raise "ERROR: Ruby Major Version must be == 2! - currently #{RUBY_VERSION}. Please update your MacOS." if major != 2
 raise "ERROR: git is missing! Please run `xcode-select --install`" if `which git`.empty?
-
-require_relative 'lib/all'
-
-# assign singleton support objects to local variables
-brew = Brew.instance
-file_util = FileUtil.instance
-git = Git.instance
-nodenv = Nodenv.instance
-rbenv = Rbenv.instance
-zsh = Zsh.instance
 
 # Install Homebrew
 brew.provision
@@ -59,8 +51,7 @@ brew.install 'nodenv' # node version manager
 brew.install 'node-build' # node installer
 nodenv.install('6.10.1')
 nodenv.global('6.10.1')
-
-brew.install 'yarn'  # It also installs the latest node 7.x. but NVM above with ensure we use 6.x
+brew.install 'yarn'  # It also installs the latest node 7.x. but will be overwritten by nodenv
 
 # Java & Scala
 brew.cask_install 'java' # Installs the latest jdk (e.g. '1.8.0_121-b13')
@@ -69,6 +60,7 @@ brew.install 'sbt' # Java/Scala build tool
 brew.cask_install 'visualvm' # JVM profiler
 
 # Ohter useful applications
+brew.cask_install 'intellij-idea' # IDE
 brew.cask_install 'keepingyouawake' # Keep computer from sleeping
 brew.cask_install 'sourcetree' # GUI for git
 brew.cask_install 'vlc'
