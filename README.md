@@ -23,6 +23,11 @@ cd my_setup
 ### zsh
 Add your own files to `~/.zshrc.d` and it will automatically be loaded.
 
+
+## Code Status
+
+[![Build Status](https://travis-ci.org/ktham/my_setup.svg?branch=master)](https://travis-ci.org/ktham/my_setup)
+
 ## License
 
 The MIT license.
