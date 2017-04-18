@@ -23,6 +23,9 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # Nodenv/Node
 if which nodenv > /dev/null; then eval "$(nodenv init -)"; fi
 
+# Python
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
 # Java
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 # export JAVA_OPTS='-Xms256M -Xmx512M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+DoEscapeAnalysis -XX:+UseBiasedLocking -XX:PermSize=64M'

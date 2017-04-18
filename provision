@@ -37,7 +37,9 @@ brew.install 'vim' # text editor
 git.config('core.editor', '/usr/local/bin/vim')
 
 # Python
-brew.install 'python'
+brew.install 'pyenv' # python version manager
+pyenv.install('2.7.13')
+pyenv.global('2.7.13'
 # system 'pip install -r pip_requirements.txt'
 
 # Ruby
