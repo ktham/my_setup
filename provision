@@ -12,8 +12,6 @@ brew.provision
 # Homebrew taps
 brew.tap 'caskroom/cask'
 brew.tap 'caskroom/versions'
-brew.tap 'homebrew/dupes'
-brew.tap 'homebrew/science'
 
 # Update formulas
 brew.update
@@ -28,44 +26,40 @@ brew.install 'openssl'
 
 # Useful Utils
 brew.install 'git' # source control
-brew.install 'grep' # gnu grep is better than bsd grep on the mac
+brew.install 'grep' # gnu grep is better than bsd grep on the MacOS
 brew.install 'htop-osx' # view system stats
 brew.install 'jq' # JSON utility
-brew.install 'phantomjs' # headless webkit tool
 brew.install 'tmux' # terminal multiplexer
 brew.install 'vim' # text editor
 git.config('core.editor', '/usr/local/bin/vim')
 
 # Python
 brew.install 'pyenv' # python version manager
-pyenv.install('2.7.13')
-pyenv.global('2.7.13'
+pyenv.install('3.7.3')
+pyenv.global('3.7.3')
 # system 'pip install -r pip_requirements.txt'
 
 # Ruby
 brew.install 'rbenv' # ruby version manager
 brew.install 'ruby-build' # ruby installer
-rbenv.install('2.4.1')
-rbenv.global('2.4.1')
+rbenv.install('2.6.2')
+rbenv.global('2.6.2')
 
 # Node/Yarn
 brew.install 'nodenv' # node version manager
 brew.install 'node-build' # node installer
-nodenv.install('6.10.1')
-nodenv.global('6.10.1')
-brew.install 'yarn'  # It also installs the latest node 7.x. but will be overwritten by nodenv
+nodenv.install('10.15.13')
+nodenv.global('10.15.13')
+brew.install 'yarn'  # node package manager
 
 # Java & Scala
-brew.cask_install 'java' # Installs the latest jdk (e.g. '1.8.0_121-b13')
+brew.cask_install 'zulu8' # OpenJDK 8
 brew.install 'scala' # Scala Repl
 brew.install 'sbt' # Java/Scala build tool
 brew.cask_install 'visualvm' # JVM profiler
 
 # Ohter useful applications
-brew.cask_install 'intellij-idea' # IDE
 brew.cask_install 'keepingyouawake' # Keep computer from sleeping
-brew.cask_install 'sourcetree' # GUI for git
-brew.cask_install 'vlc'
 
 # Remove old versions
 brew.cleanup

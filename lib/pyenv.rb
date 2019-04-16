@@ -4,7 +4,7 @@ class Pyenv
   include Singleton
 
   def install(version)
-    if `pyenv install -l | grep #{version}`.empty?
+    if `pyenv versions | grep #{version}`.empty?
       puts "Installing: python #{version}"
       if system "pyenv install #{version}"
         puts "Installed: python #{version}"

@@ -4,7 +4,7 @@ This is the script is used to set up my development environment.
 
 
 ## Prerequisites
-* MacOS Sierra and higher (I've only tested it on Sierra)
+* MacOS Mojave and higher (I've only tested it on Mojave)
 * Mac OS X command line tools (`xcode-select --install`)
 * Ruby 2.0.0 or higher (MacOS Sierra already has it)
 * *Optional* [XQuartz](https://xquartz.macosforge.org/) - for X11
@@ -32,7 +32,7 @@ Add your own files to `~/.zshrc.d` and it will automatically be loaded.
 
 The MIT license.
 
-Copyright (c) 2017 Kevin Tham
+Copyright (c) 2019 Kevin Tham
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

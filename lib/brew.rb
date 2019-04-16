@@ -49,13 +49,11 @@ class Brew
   end
   
   @existing_cask_packages = nil
-  DEFAULT_APPDIR = '/Applications' # This is where apps are symlinked to
-  DEFAULT_CASKROOM = '/usr/local/Caskroom' # This is where apps are actually installed  
-  def cask_install(package, appdir = DEFAULT_APPDIR, caskroom = DEFAULT_CASKROOM)
+  def cask_install(package)
     @existing_cask_packages ||= `brew cask list`.split("\n")
     if !@existing_cask_packages.include?(package)
       puts "Installing: #{package}"
-      if system("brew cask install #{package} --appdir=#{appdir} --caskroom=#{caskroom}")
+      if system("brew cask install #{package}")
         @existing_cask_packages << package
       end
     else
