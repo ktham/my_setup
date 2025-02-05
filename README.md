@@ -2,16 +2,16 @@
 
 This is the script is used to set up my development environment.
 
-
 ## Prerequisites
-* MacOS Mojave and higher (I've only tested it on Mojave)
+* MacOS Sequoia and higher (I've only tested it on Sequoia)
 * Mac OS X command line tools (`xcode-select --install`)
-* Ruby 2.0.0 or higher (MacOS Sierra already has it)
+* Ruby 2.6.0 or higher (MacOS Sequoia already has it)
 * *Optional* [XQuartz](https://xquartz.macosforge.org/) - for X11
 
 ## Getting Started
 
-Simply checkout the repo and run the provision script. The script is pretty minimal and reads like a shell script. The script is also idempotent so you don't have to worry about running it multiple times.
+Simply checkout the repo and run the provision script. The script is pretty minimal and reads like a shell script.
+The script is also idempotent so you don't have to worry about running it multiple times.
 
 ```bash
 git clone https://github.com/ktham/my_setup.git ~/my_setup
@@ -22,11 +22,6 @@ cd my_setup
 ## Customizations
 ### zsh
 Add your own files to `~/.zshrc.d` and it will automatically be loaded.
-
-
-## Code Status
-
-[![Build Status](https://travis-ci.org/ktham/my_setup.svg?branch=master)](https://travis-ci.org/ktham/my_setup)
 
 ## License
 

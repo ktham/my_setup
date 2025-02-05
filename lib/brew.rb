@@ -4,11 +4,11 @@ class Brew
   include Singleton
 
   def provision
-    if File.exist?('/usr/local/bin/brew')
+    if File.exist?('/opt/homebrew/bin/brew')
       puts 'Already installed: homebrew'
     else
       puts 'Installing homebrew...'
-      system %Q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
+      system %Q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"}
     end
   end
 
@@ -49,11 +49,12 @@ class Brew
   end
   
   @existing_cask_packages = nil
-  def cask_install(package)
-    @existing_cask_packages ||= `brew cask list`.split("\n")
+  DEFAULT_APPDIR = '/Applications' # This is where apps are symlinked to
+  def cask_install(package, appdir = DEFAULT_APPDIR)
+    @existing_cask_packages ||= `brew list --cask`.split("\n")
     if !@existing_cask_packages.include?(package)
       puts "Installing: #{package}"
-      if system("brew cask install #{package}")
+      if system("brew install --cask #{package} --appdir=#{appdir}")
         @existing_cask_packages << package
       end
     else
