@@ -7,9 +7,7 @@ class Pyenv
     if `pyenv versions | grep #{version}`.empty?
       puts "Installing: python #{version}"
 
-      # On MacOS Mojave and higher, need to add sdk spath: https://github.com/pyenv/pyenv/issues/1219
-      # After https://github.com/pyenv/pyenv/pull/1274/ is merged, can remove the below CFLAGS var
-      if system "CFLAGS=\"-I$(xcrun --show-sdk-path)/usr/include\" pyenv install #{version}"
+      if system "pyenv install #{version}"
         puts "Installed: python #{version}"
       else
         puts "Error Installing: python #{version}"

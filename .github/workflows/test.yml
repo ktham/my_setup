@@ -1,0 +1,25 @@
+name: Test
+
+on:
+  pull_request:
+    paths-ignore:
+      - "README.md"
+
+# Testing only needs permissions to read the repository contents.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - macos-15
+    name: test
+    runs-on: matrix.os
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Test Provision Script
+        run: ./provision
