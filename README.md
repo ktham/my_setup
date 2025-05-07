@@ -26,6 +26,19 @@ darwin-rebuild build --flake .#Kevins-MacBook-Pro
 darwin-rebuild switch --flake .#Kevins-MacBook-Pro
 ```
 
+## Uninstallation
+
+```
+# Run the nix-darwin uninstaller
+nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller
+
+# Remove nix-darwin file left behind under our nix-profile bin directory
+sudo rm ~/.nix-profile/bin/darwin-rebuild
+
+# Remove nix using Determinate's Nix uninstaller
+/nix/nix-installer uninstall
+```
+
 ## License
 
 The MIT license.
