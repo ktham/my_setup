@@ -13,6 +13,10 @@
     pkgs.jq
   ];
 
+  xdg.configFile."zed/settings.json" = {
+    source = ./config/zed_settings.json;
+  };
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
@@ -65,6 +69,18 @@
 
     zsh = {
       enable = true;
+
+      oh-my-zsh = {
+        enable = true;
+        theme = "robbyrussell";
+        plugins = [
+          "git"
+        ];
+      };
+
+      shellAliases = {
+        gl = "git log --graph --pretty=format:'%Cred%h%Creset-%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue) <%an>%Creset'";
+      };
     };
 
     # Let Home Manager install and manage itself.

@@ -50,6 +50,8 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users."kevin.tham" = import ./home.nix;
+          # When an existing file is in the way, back it up with a .backup ext
+          home-manager.backupFileExtension = "backup";
 
           # Optionally, use home-manager.extraSpecialArgs to pass
           # arguments to home.nix
