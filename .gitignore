@@ -20,3 +20,6 @@
 
 # Don't commit jars
 *.jar
+
+# Ignore Nix artifacts
+result
