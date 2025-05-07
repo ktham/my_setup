@@ -3,26 +3,34 @@
 Nix configurations used to set up my development environment.
 
 ## Prerequisites
-* MacOS Sequoia and higher (I've only tested it on Sequoia)
-* Mac OS X command line tools (`xcode-select --install`) to clone this Git repo
-* Nix with Flake Support (Download from: https://docs.determinate.systems/)
+* MacOS Sequoia or higher (I've only tested it on Sequoia)
+* Git via MacOS command line tools (`xcode-select --install`) in order to clone this Git repo
+* Nix via the Nix installer from Determinate Systems
+  - Use it without the --determinate flag to install upstream Nix from nixos.org
+  - Determinate's Nix installer includes an automated uninstaller whereas manual uninstallation of Nix on macOS is a (complex process)[https://nix.dev/manual/nix/2.18/installation/uninstall#macos]
 
 ## Getting Started
+
+Note: The instructions assume that the hostname of the system is `Kevins-MacBook-Pro`
+
+If that's not the case, in `flake.nix`, where you see,
+`darwinConfigurations."Kevins-MacBook-Pro"` replace `"Kevins-MacBook-Pro"` with
+the output of `scutil --get LocalHostName`.
 
 ```bash
 git clone https://github.com/ktham/my_setup.git ~/my_setup
 cd my_setup
 
-# Run the "darwin-rebuild" executable from the "nix-darwin/nix-darwin-24.11" flake
-# This will install the darwin-rebuild locally.
-#
-nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch
+# Run the "darwin-rebuild" executable from the "nix-darwin/nix-darwin-24.11"
+# flake. This will install the darwin-rebuild locally.
+nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake \
+.#Kevins-MacBook-Pro
 
 # Build the #Kevins-MacBook-Pro host config to ensure it's valid
 darwin-rebuild build --flake .#Kevins-MacBook-Pro
 
 # Build the #Kevins-MacBook-Pro host config and switch to use it
-# Note: Sudo privileges are needed and you will be prompted to enter your password
+# Note: Sudo privileges are needed, a password prompt will appear.
 darwin-rebuild switch --flake .#Kevins-MacBook-Pro
 ```
 
@@ -30,7 +38,8 @@ darwin-rebuild switch --flake .#Kevins-MacBook-Pro
 
 ```
 # Run the nix-darwin uninstaller
-nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller
+nix --extra-experimental-features "nix-command flakes" run \
+nix-darwin#darwin-uninstaller
 
 # Remove nix-darwin file left behind under our nix-profile bin directory
 sudo rm ~/.nix-profile/bin/darwin-rebuild
