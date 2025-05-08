@@ -8,10 +8,13 @@
 
   # Packages that should be installed to the user profile.
   home.packages = [
+    pkgs.zsh-powerlevel10k # custom theme for oh-my-zsh
     pkgs.htop
     pkgs.gnugrep # gnu grep is better than bsd grep on MacOS
     pkgs.jq
   ];
+
+  home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
 
   xdg.configFile."zed/settings.json" = {
     source = ./config/zed_settings.json;
@@ -70,9 +73,14 @@
     zsh = {
       enable = true;
 
+      initExtra = ''
+        [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+      '';
+
       oh-my-zsh = {
         enable = true;
-        theme = "robbyrussell";
+        custom = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k";
+        theme = "powerlevel10k";
         plugins = [
           "git"
         ];
