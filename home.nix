@@ -75,6 +75,10 @@
 
       initExtra = ''
         [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+        # Podman Desktop's bin directory
+        # Right now, Podman is installed outside of Nix.
+        export PATH="/opt/podman/bin:$PATH"
       '';
 
       oh-my-zsh = {
