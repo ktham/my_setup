@@ -3,7 +3,7 @@
 Nix configurations used to set up my development environment.
 
 ## Prerequisites
-* MacOS Sequoia or higher (I've only tested it on Sequoia)
+* MacOS Sequoia or higher on Apple Silicon
 * Git via MacOS command line tools (`xcode-select --install`) in order to clone this Git repo
 * Nix via the Nix installer from Determinate Systems
   - Use it without the --determinate flag to install upstream Nix from nixos.org
@@ -11,27 +11,31 @@ Nix configurations used to set up my development environment.
 
 ## Getting Started
 
-Note: The instructions assume that the hostname of the system is `Kevins-MacBook-Pro`
-
-If that's not the case, in `flake.nix`, where you see,
-`darwinConfigurations."Kevins-MacBook-Pro"` replace `"Kevins-MacBook-Pro"` with
-the output of `scutil --get LocalHostName`.
+My Nix configuration makes the following assumptions:
+* The username is `kevintham`
+* The OS and architecture is `aarch64-darwin` (i.e. MacOS on Apple Silicon)
 
 ```bash
 git clone https://github.com/ktham/my_setup.git ~/my_setup
 cd my_setup
 
-# Run the "darwin-rebuild" executable from the "nix-darwin/nix-darwin-24.11"
-# flake. This will install the darwin-rebuild locally.
+# This command uses the "darwin-rebuild" executable from the
+# "nix-darwin/nix-darwin-24.11" flake since we don't have this executable
+# locally yet.
+#
+# This will build the #ktham-mac host configuration and switch to using it.
 nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake \
-.#Kevins-MacBook-Pro
+.#ktham-mac
+```
 
-# Build the #Kevins-MacBook-Pro host config to ensure it's valid
-darwin-rebuild build --flake .#Kevins-MacBook-Pro
+For subsequent updates, you can invoke the `darwin-rebuild` command directly:
+```
+# Build the #ktham-mac host configuration to ensure it's valid
+darwin-rebuild build --flake .#ktham-mac
 
-# Build the #Kevins-MacBook-Pro host config and switch to use it
+# Build the #ktham-mac host configuration and switch to use it
 # Note: Sudo privileges are needed, a password prompt will appear.
-darwin-rebuild switch --flake .#Kevins-MacBook-Pro
+darwin-rebuild switch --flake .#ktham-mac
 ```
 
 ## Uninstallation

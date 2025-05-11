@@ -17,7 +17,10 @@
 
   outputs = inputs@{ self, nixpkgs, home-manager, nix-darwin }:
   let
-    configuration = { pkgs, ... }: {
+    username = "kevintham";
+    homeDirectory = "/Users/${username}";
+
+    darwinConfiguration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = [
@@ -35,13 +38,13 @@
 
       # Nix needs to know what our home directory is for home-manager to work
       # See: https://github.com/nix-darwin/nix-darwin/issues/423
-      users.users."kevin.tham".home = "/Users/kevin.tham";
+      users.users.${username}.home = homeDirectory;
     };
   in
   {
-    darwinConfigurations."Kevins-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations.ktham-mac = nix-darwin.lib.darwinSystem {
       modules = [
-        configuration
+        darwinConfiguration
 
         # `home-manager` module
         home-manager.darwinModules.home-manager
@@ -49,7 +52,9 @@
           # `home-manager` config
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users."kevin.tham" = import ./home.nix;
+          home-manager.users.${username} = import ./home.nix {
+            inherit username homeDirectory;
+          };
           # When an existing file is in the way, back it up with a .backup ext
           home-manager.backupFileExtension = "backup";
 
