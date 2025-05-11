@@ -3,11 +3,12 @@
 Nix configurations used to set up my development environment.
 
 ## Prerequisites
-* MacOS Sequoia or higher on Apple Silicon
+* MacOS Sequoia or higher (15.4+) on Apple Silicon
 * Git via MacOS command line tools (`xcode-select --install`) in order to clone this Git repo
-* Nix via the Nix installer from Determinate Systems
-  - Use it without the --determinate flag to install upstream Nix from nixos.org
-  - Determinate's Nix installer includes an automated uninstaller whereas manual uninstallation of Nix on macOS is a (complex process)[https://nix.dev/manual/nix/2.18/installation/uninstall#macos]
+* Nix (>= 2.28.3) via the [Nix installer from Determinate Systems](https://github.com/DeterminateSystems/nix-installer?tab=readme-ov-file#determinate-nix-installer)
+  - Omit the `--determinate` flag to install upstream Nix over Determinate Nix
+  - Determinate's installation [can survive MacOS upgrades](https://determinate.systems/posts/nix-survival-mode-on-macos/)
+  - Determinate's installation also includes an automated uninstaller whereas manual uninstallation of Nix on macOS is a (complex process)[https://nix.dev/manual/nix/2.18/installation/uninstall#macos]
 
 ## Getting Started
 

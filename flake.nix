@@ -52,7 +52,7 @@
           # `home-manager` config
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${username} = import ./home.nix {
+          home-manager.users.${username} = import ./home-manager.nix {
             inherit username homeDirectory;
           };
           # When an existing file is in the way, back it up with a .backup ext
