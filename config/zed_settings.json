@@ -15,5 +15,10 @@
     "mode": "system",
     "light": "One Light",
     "dark": "One Dark"
+  },
+  "languages": {
+    "Nix": {
+      "language_servers": ["nixd", "!nil"]
+    }
   }
 }

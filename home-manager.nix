@@ -12,6 +12,7 @@
         pkgs.htop
         pkgs.gnugrep # gnu grep is better than bsd grep on MacOS
         pkgs.jq
+        pkgs.nixd
       ];
 
       home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
