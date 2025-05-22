@@ -42,6 +42,8 @@
           enable = true;
           extraConfig = {
             core.editor = "vim";
+            user.name = "ktham";
+            user.email = "ktham@users.noreply.github.com";
           };
         };
 
