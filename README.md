@@ -25,7 +25,7 @@ cd my_setup
 # locally yet.
 #
 # This will build the #ktham-mac host configuration and switch to using it.
-nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake \
+nix run nix-darwin/nix-darwin-25.05#darwin-rebuild -- switch --flake \
 .#ktham-mac
 ```
 
@@ -36,7 +36,7 @@ darwin-rebuild build --flake .#ktham-mac
 
 # Build the #ktham-mac host configuration and switch to use it
 # Note: Sudo privileges are needed, a password prompt will appear.
-darwin-rebuild switch --flake .#ktham-mac
+sudo darwin-rebuild switch --flake .#ktham-mac
 ```
 
 ## Uninstallation

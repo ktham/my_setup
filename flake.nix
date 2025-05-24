@@ -33,6 +33,19 @@
       # $ darwin-rebuild changelog
       system.stateVersion = 5;
 
+      system.primaryUser = username;
+
+      system.defaults = {
+        finder = {
+          # system.default.finder.AppleShowAllFiles executes this:
+          # `defaults write com.apple.finder AppleShowAllFiles YES`
+          #
+          # Note: When this is set for the first time, you'll need to run
+          # `killall Finder` to force Finder to reload to show hidden files.
+          AppleShowAllFiles = true;
+        };
+      };
+
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
 

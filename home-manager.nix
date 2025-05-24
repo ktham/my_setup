@@ -76,7 +76,7 @@
         zsh = {
           enable = true;
 
-          initExtra = ''
+          initContent = ''
             [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
             # Podman Desktop's bin directory
