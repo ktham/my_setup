@@ -42,6 +42,7 @@
           enable = true;
           extraConfig = {
             core.editor = "vim";
+            init.defaultBranch = "main";
             user.name = "ktham";
             user.email = "ktham@users.noreply.github.com";
           };
