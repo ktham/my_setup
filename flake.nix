@@ -44,6 +44,14 @@
           # `killall Finder` to force Finder to reload to show hidden files.
           AppleShowAllFiles = true;
         };
+
+        # TODO: Doesn't work
+        # Enforce password immediately screen saver begins or display is off
+        # Equivalent to setting in MacOS (Sequoia) System Settings > Lock Screen
+        # screensaver = {
+        #   askForPassword = true;
+        #   askForPasswordDelay = 0;
+        # };
       };
 
       # The platform the configuration will be used on.
