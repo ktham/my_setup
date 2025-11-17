@@ -39,6 +39,37 @@ darwin-rebuild build --flake .#ktham-mac
 sudo darwin-rebuild switch --flake .#ktham-mac
 ```
 
+## Useful Commands 
+
+### Updating Flakes
+
+```
+nix flake update
+darwin-rebuild build --flake .#ktham-mac
+sudo darwin-rebuild switch --flake .#ktham-mac
+```
+
+### Upgrading Nix
+
+```shell
+sudo -i nix upgrade-nix
+```
+
+### When installing new versions of MacOS
+Unfortunately, when updating MacOS to new match/major versions, MacOS modifies
+the following files:
+- `/etc/zshrc`
+- `/etc/zprofile`
+
+You will need to execute the following to get Nix to re-manage them again:
+```shell
+sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin
+sudo mv /etc/zprofile /etc/zprofile.before-nix-darwin
+
+darwin-rebuild build --flake .#ktham-mac
+sudo darwin-rebuild switch --flake .#ktham-mac
+```
+
 ## Uninstallation
 
 ```
