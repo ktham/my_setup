@@ -25,7 +25,7 @@ cd my_setup
 # locally yet.
 #
 # This will build the #ktham-mac host configuration and switch to using it.
-nix run nix-darwin/nix-darwin-25.05#darwin-rebuild -- switch --flake \
+nix run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake \
 .#ktham-mac
 ```
 
