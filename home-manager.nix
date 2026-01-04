@@ -16,6 +16,7 @@
         pkgs.nixd
         pkgs.docker-client
         pkgs.docker-compose
+        pkgs.imagemagick
       ];
 
       home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
