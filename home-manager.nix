@@ -17,6 +17,7 @@
         pkgs.docker-client
         pkgs.docker-compose
         pkgs.imagemagick
+        pkgs.scc
       ];
 
       home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
@@ -99,7 +100,7 @@
           };
 
           shellAliases = {
-            gl = "git log --graph --pretty=format:'%Cred%h%Creset-%C(yello    )%d%Creset %s %Cgreen(%cr) %C(bold blue) <%an>%Creset'";
+            gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'";
           };
         };
 
