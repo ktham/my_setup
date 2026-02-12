@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "provider": "none"
+  },
   "ui_font_size": 16,
   "buffer_font_size": 16,
   "preferred_line_length": 80,
@@ -15,9 +18,6 @@
     "mode": "system",
     "light": "One Light",
     "dark": "One Dark"
-  },
-  "features": {
-    "edit_prediction_provider": "none"
   },
   "languages": {
     "Nix": {
