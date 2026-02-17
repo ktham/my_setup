@@ -7,12 +7,13 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "base_keymap": "JetBrains",
   "edit_predictions": {
     "provider": "none"
   },
   "ui_font_size": 16,
   "buffer_font_size": 16,
-  "preferred_line_length": 80,
+  "preferred_line_length": 100,
   "soft_wrap": "preferred_line_length",
   "theme": {
     "mode": "system",
