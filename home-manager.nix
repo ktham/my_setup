@@ -23,7 +23,7 @@
       home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
 
       xdg.configFile."zed/settings.json" = {
-        source = ./config/zed_settings.json;
+        source = ./config/zed_settings.jsonc;
       };
 
       # This value determines the Home Manager release that your
