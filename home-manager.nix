@@ -21,6 +21,8 @@
       ];
 
       home.file.".p10k.zsh".source = ./dotfiles/p10k.zsh;
+      home.file.".claude/CLAUDE.md".source = ./dotfiles/claude/CLAUDE.md;
+      home.file.".claude/settings.json".source = ./dotfiles/claude/settings.json;
 
       xdg.configFile."zed/settings.json" = {
         source = ./config/zed_settings.jsonc;
