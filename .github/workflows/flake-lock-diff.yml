@@ -1,0 +1,121 @@
+name: Nix Flake Lock
+
+on:
+  pull_request:
+    paths:
+      - "flake.lock"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  diff:
+    name: Diff Package Versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+
+      - name: Extract nixpkgs revs and package list
+        id: extract
+        run: |
+          set -euo pipefail
+
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+
+          NEW_REV=$(jq -r '.nodes.nixpkgs.locked.rev' flake.lock)
+          OLD_REV=$(git show "$BASE_SHA:flake.lock" | jq -r '.nodes.nixpkgs.locked.rev')
+
+          # Extract pkgs.X entries from the home.packages list block.
+          PKGS=$(awk '/home\.packages = \[/,/\];/' home-manager.nix \
+            | grep -oE 'pkgs\.[a-zA-Z0-9_-]+' \
+            | sed 's/^pkgs\.//' \
+            | sort -u \
+            | tr '\n' ' ')
+
+          echo "old_rev=$OLD_REV" >> "$GITHUB_OUTPUT"
+          echo "new_rev=$NEW_REV" >> "$GITHUB_OUTPUT"
+          echo "pkgs=$PKGS" >> "$GITHUB_OUTPUT"
+
+          echo "Old nixpkgs: $OLD_REV"
+          echo "New nixpkgs: $NEW_REV"
+          echo "Packages: $PKGS"
+
+      - name: Diff package versions
+        id: diff
+        run: |
+          set -euo pipefail
+
+          OLD="${{ steps.extract.outputs.old_rev }}"
+          NEW="${{ steps.extract.outputs.new_rev }}"
+          PKGS="${{ steps.extract.outputs.pkgs }}"
+
+          NIXPKGS_URL="https://github.com/NixOS/nixpkgs"
+          old_link="[\`${OLD:0:7}\`]($NIXPKGS_URL/commit/$OLD)"
+          new_link="[\`${NEW:0:7}\`]($NIXPKGS_URL/commit/$NEW)"
+          compare_link="[compare]($NIXPKGS_URL/compare/$OLD...$NEW)"
+
+          header="## Flake lock diff"$'\n\n'"nixpkgs: $old_link → $new_link ($compare_link)"$'\n'
+
+          if [ "$OLD" = "$NEW" ]; then
+            body="## Flake lock diff"$'\n\n'"nixpkgs rev unchanged ([\`${OLD:0:7}\`]($NIXPKGS_URL/commit/$OLD)) — no package version changes from this update."
+          else
+            rows=""
+            changed=0
+            for p in $PKGS; do
+              oldv=$(nix eval --raw "github:nixos/nixpkgs/$OLD#$p.version" 2>/dev/null || echo "n/a")
+              newv=$(nix eval --raw "github:nixos/nixpkgs/$NEW#$p.version" 2>/dev/null || echo "n/a")
+              if [ "$oldv" != "$newv" ]; then
+                rows+="| \`$p\` | $oldv | **$newv** |"$'\n'
+                changed=$((changed + 1))
+              fi
+            done
+
+            if [ "$changed" -eq 0 ]; then
+              body="$header"$'\n'"No version bumps in tracked packages. (Transitive deps may still have rebuilt — run \`nix store diff-closures\` locally for a full picture.)"
+            else
+              table=$'\n| package | old | new |\n|---|---|---|\n'"$rows"
+              footer=$'\n_'"$changed"" package(s) changed. Other packages unchanged at the version level; transitive deps not checked._"
+              body="$header$table$footer"
+            fi
+          fi
+
+          {
+            echo 'body<<COMMENT_EOF'
+            printf '%s\n' "$body"
+            echo 'COMMENT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post sticky comment
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          COMMENT_BODY: ${{ steps.diff.outputs.body }}
+        with:
+          script: |
+            const marker = '<!-- flake-lock-diff -->';
+            const body = marker + '\n' + process.env.COMMENT_BODY;
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+            const existing = comments.find(c => c.body && c.body.startsWith(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: existing.id, body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number, body
+              });
+            }
