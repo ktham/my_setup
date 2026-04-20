@@ -34,5 +34,10 @@
     "Nix": {
       "language_servers": ["nixd", "!nil"],
     },
+    "Scala": {
+      // Metals V1 (the latest stable major version) is too slow.
+      // Instead, use Intellij for anything serious.
+      "language_servers": ["!metals"],
+    },
   },
 }

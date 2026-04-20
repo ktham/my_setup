@@ -43,6 +43,9 @@
           enable = true;
           enableZshIntegration = true;
           nix-direnv.enable = true;
+          # For some reason, test suite tries to run `fish ./test/direnv-test.fish`, which fails,
+          # so add doCheck = false, to skip the test suite.
+          package = pkgs.direnv.overrideAttrs (_: { doCheck = false; });
         };
 
         git = {
