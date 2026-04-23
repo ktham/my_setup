@@ -40,7 +40,7 @@
       ];
 
       # tailscaled is started by launchd at boot. First-time setup on a
-      # fresh machine requires a one-time `sudo tailscale up` to authenticate;
+      # fresh machine requires a one-time `tailscale up` to authenticate;
       # node state persists in /Library/Tailscale/ and re-auths on reboot.
       #
       # Logs:    /var/log/tailscaled.log
