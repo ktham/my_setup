@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -13,19 +14,47 @@
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Pinned past v1.96.4: that tag's flake uses buildGo125Module but its
+    # go.mod needs Go 1.26.1+. Switch to a tag ref once v1.97.0+ is released.
+    tailscale = {
+      url = "github:tailscale/tailscale/7412fc00acbd3434c57f20f685a3273e8fe75e57";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nix-darwin }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, tailscale }:
   let
     username = "kevintham";
     homeDirectory = "/Users/${username}";
+    system = "aarch64-darwin";
+
+    tailscalePkg = tailscale.packages.${system}.tailscale;
 
     darwinConfiguration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = [
         pkgs.vim
+        tailscalePkg
       ];
+
+      # tailscaled is started by launchd at boot. First-time setup on a
+      # fresh machine requires a one-time `sudo tailscale up` to authenticate;
+      # node state persists in /Library/Tailscale/ and re-auths on reboot.
+      #
+      # Logs:    /var/log/tailscaled.log
+      # Restart: sudo launchctl kickstart -k system/com.tailscale.tailscaled
+      launchd.daemons.tailscaled = {
+        command = "${tailscalePkg}/bin/tailscaled";
+        serviceConfig = {
+          Label = "com.tailscale.tailscaled";
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/var/log/tailscaled.log";
+          StandardErrorPath = "/var/log/tailscaled.log";
+        };
+      };
 
       nix.enable = false;
 
