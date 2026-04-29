@@ -36,7 +36,7 @@
   // Alternatively: "split"
   "diff_view_style": "unified",
   "preferred_line_length": 100,
-  "soft_wrap": "preferred_line_length",
+  "soft_wrap": "bounded",
   "theme": {
     "mode": "system",
     "light": "One Light",
