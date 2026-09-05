@@ -9,6 +9,10 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   diff:
     name: Diff Package Versions
@@ -96,13 +100,25 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           COMMENT_BODY: ${{ steps.diff.outputs.body }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         with:
           script: |
-            const marker = '<!-- flake-lock-diff -->';
-            const body = marker + '\n' + process.env.COMMENT_BODY;
-
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
+            const headSha = process.env.HEAD_SHA;
+
+            // cancel-in-progress is best-effort: a cancelled run can still be
+            // mid-flight in the write below. Skip if the PR has moved on.
+            const { data: pr } = await github.rest.pulls.get({
+              owner, repo, pull_number: issue_number
+            });
+            if (pr.head.sha !== headSha) {
+              core.info(`PR head moved ${headSha} -> ${pr.head.sha}; skipping stale comment.`);
+              return;
+            }
+
+            const marker = '<!-- flake-lock-diff -->';
+            const body = marker + '\n' + process.env.COMMENT_BODY;
 
             const comments = await github.paginate(
               github.rest.issues.listComments,
