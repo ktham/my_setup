@@ -20,12 +20,12 @@ My Nix configuration makes the following assumptions:
 git clone https://github.com/ktham/my_setup.git ~/my_setup
 cd my_setup
 
-# This command uses the "darwin-rebuild" executable from the
-# "nix-darwin/nix-darwin-24.11" flake since we don't have this executable
-# locally yet.
+# This command uses the "darwin-rebuild" executable from the nix-darwin
+# flake since we don't have this executable locally yet. Keep the release
+# below in sync with the nix-darwin input in flake.nix.
 #
 # This will build the #ktham-mac host configuration and switch to using it.
-nix run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake \
+nix run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake \
 .#ktham-mac
 ```
 
