@@ -10,3 +10,7 @@ For structured queries (filter by author, diff hunks, line numbers), hit
 both API endpoints — one alone misses the other.
 To just read through everything, `gh pr view N --comments` prints all
 comments as one formatted text stream.
+
+# Writing style
+- When giving technical explanations, speak in ASD-STE100 Simplified Technical English.
+- Never use em dashes. Use commas, parentheses, or a new sentence instead.

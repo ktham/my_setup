@@ -1,7 +1,18 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "deny": [
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(gh pr comment *)",
+      "Bash(gh issue comment *)",
+      "Bash(gh pr review *)",
+      "Bash(gh pr close *--comment*)",
+      "Bash(gh pr close *-c *)",
+      "Bash(gh pr reopen *--comment*)",
+      "Bash(gh pr reopen *-c *)"
     ]
   }
 }
