@@ -4,6 +4,11 @@ on:
   pull_request:
     paths:
       - "flake.lock"
+      - "flake.nix"
+      - "home-manager.nix"
+      - ".github/scripts/flake-lock-diff.sh"
+      - ".github/scripts/package-versions.nix"
+      - ".github/workflows/flake-lock-diff.yml"
 
 permissions:
   contents: read
@@ -18,7 +23,9 @@ jobs:
     name: Diff Package Versions
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR head
+      # For pull_request events, this checks out the merge commit of the PR
+      # into its base, so HEAD shows the result of merging the PR.
+      - name: Checkout PR merge commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
@@ -26,70 +33,16 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
 
-      - name: Extract nixpkgs revs and package list
-        id: extract
-        run: |
-          set -euo pipefail
-
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
-
-          NEW_REV=$(jq -r '.nodes.nixpkgs.locked.rev' flake.lock)
-          OLD_REV=$(git show "$BASE_SHA:flake.lock" | jq -r '.nodes.nixpkgs.locked.rev')
-
-          # Extract pkgs.X entries from the home.packages list block.
-          PKGS=$(awk '/home\.packages = \[/,/\];/' home-manager.nix \
-            | grep -oE 'pkgs\.[a-zA-Z0-9_-]+' \
-            | sed 's/^pkgs\.//' \
-            | sort -u \
-            | tr '\n' ' ')
-
-          echo "old_rev=$OLD_REV" >> "$GITHUB_OUTPUT"
-          echo "new_rev=$NEW_REV" >> "$GITHUB_OUTPUT"
-          echo "pkgs=$PKGS" >> "$GITHUB_OUTPUT"
-
-          echo "Old nixpkgs: $OLD_REV"
-          echo "New nixpkgs: $NEW_REV"
-          echo "Packages: $PKGS"
-
-      - name: Diff package versions
+      # Compares every flake.lock input, and the version of every package that
+      # the nix-darwin and home-manager configurations install.
+      - name: Diff flake inputs and package versions
         id: diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
-
-          OLD="${{ steps.extract.outputs.old_rev }}"
-          NEW="${{ steps.extract.outputs.new_rev }}"
-          PKGS="${{ steps.extract.outputs.pkgs }}"
-
-          NIXPKGS_URL="https://github.com/NixOS/nixpkgs"
-          old_link="[\`${OLD:0:7}\`]($NIXPKGS_URL/commit/$OLD)"
-          new_link="[\`${NEW:0:7}\`]($NIXPKGS_URL/commit/$NEW)"
-          compare_link="[compare]($NIXPKGS_URL/compare/$OLD...$NEW)"
-
-          header="## Flake lock diff"$'\n\n'"nixpkgs: $old_link → $new_link ($compare_link)"$'\n'
-
-          if [ "$OLD" = "$NEW" ]; then
-            body="## Flake lock diff"$'\n\n'"nixpkgs rev unchanged ([\`${OLD:0:7}\`]($NIXPKGS_URL/commit/$OLD)) — no package version changes from this update."
-          else
-            rows=""
-            changed=0
-            for p in $PKGS; do
-              oldv=$(nix eval --raw "github:nixos/nixpkgs/$OLD#$p.version" 2>/dev/null || echo "n/a")
-              newv=$(nix eval --raw "github:nixos/nixpkgs/$NEW#$p.version" 2>/dev/null || echo "n/a")
-              if [ "$oldv" != "$newv" ]; then
-                rows+="| \`$p\` | $oldv | **$newv** |"$'\n'
-                changed=$((changed + 1))
-              fi
-            done
-
-            if [ "$changed" -eq 0 ]; then
-              body="$header"$'\n'"No version bumps in tracked packages. (Transitive deps may still have rebuilt — run \`nix store diff-closures\` locally for a full picture.)"
-            else
-              table=$'\n| package | old | new |\n|---|---|---|\n'"$rows"
-              footer=$'\n_'"$changed"" package(s) changed. Other packages unchanged at the version level; transitive deps not checked._"
-              body="$header$table$footer"
-            fi
-          fi
-
+          body=$(.github/scripts/flake-lock-diff.sh "$BASE_SHA" HEAD)
+          printf '%s\n' "$body"
           {
             echo 'body<<COMMENT_EOF'
             printf '%s\n' "$body"

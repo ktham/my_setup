@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Pinned past v1.96.4: that tag's flake uses buildGo125Module but its
-    # go.mod needs Go 1.26.1+. Switch to a tag ref once v1.97.0+ is released.
+    # Pinned to a release tag, so `nix flake update` does not upgrade tailscale.
+    # To upgrade, change the tag below and run `nix flake update tailscale`.
     tailscale = {
-      url = "github:tailscale/tailscale/7412fc00acbd3434c57f20f685a3273e8fe75e57";
+      url = "github:tailscale/tailscale/v1.104.6";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
